@@ -1,0 +1,2 @@
+mercurial==4.8.2
+virtualenv==16.6.0

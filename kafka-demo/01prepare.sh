@@ -11,3 +11,8 @@ virtualenv python-lib
 
 # 生成了目录
 source python-lib/bin/activate
+
+
+
+# 保存依赖
+ pip freeze > requirements.txt

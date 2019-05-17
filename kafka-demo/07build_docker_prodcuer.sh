@@ -1,0 +1,1 @@
+docker build -f kafka-producer.dockerfile --tag=kafka-producer .

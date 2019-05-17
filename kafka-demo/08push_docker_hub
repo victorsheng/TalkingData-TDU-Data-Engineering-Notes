@@ -1,0 +1,2 @@
+docker tag 703ccc3b1126 victor2302/kafka-producer:test
+docker push victor2302/kafka-producer:test
