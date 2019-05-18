@@ -1,0 +1,1 @@
+python data_store.py analyzer 127.0.0.1:9092 crytocurrency 127.0.0.1
