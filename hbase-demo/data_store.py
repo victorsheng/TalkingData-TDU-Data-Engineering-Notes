@@ -40,10 +40,10 @@ def persist_data(data,hbase_connection,data_table):
         table.put(row_key, {'family:symbol': str(symbol),
                             'family:trade_time':str(timestamp),
                             'family:trade_price':str(price)})
-        logger.debug('Persist data to habse for symbol :%s ,price: %s,timestamp:%s '%s(symbol,price,timestamp))
+        logger.debug('Persist data to habse for symbol :%s ,price: %s,timestamp:%s '%(symbol,price,timestamp))
     
     except Exception as e:
-        logger.error('Failed to persist data to habse for %s',e)
+        logger.error('Failed to persist data to habse for %s',e.message)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
