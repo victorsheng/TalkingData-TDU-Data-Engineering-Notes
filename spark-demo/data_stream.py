@@ -75,13 +75,13 @@ if __name__ == "__main__":
     sc = SparkContext('local[2]',AveragePrice)
     sc.setLevel("INFO")
     ssc = StreamingContext(sc, batch_duration)
-
+    //创建流
     directKafkaStream = KafkaUitls.createDirectStream(ssc,[source_topic],{'metadata.broker.list':kafka_borker})
 
     stream=directKafkaStream.map(lambda x: x[1])
-
+    
     kafka_producer=KafkaProducer(bootstrap_servers=kafka_borker)
-
+    //进行生产
     process_stream(stream,kafka_producer,target_topic)
 
     atexit.regist(shutdown_hook,kafka_producer)

@@ -1,0 +1,1 @@
+spark-submit --jars spark-streaming-kafka-0.8-assenbly_2.11-2.0.0.jar data_stream.py analyzer average-price 127.0.0.1:9092 5
