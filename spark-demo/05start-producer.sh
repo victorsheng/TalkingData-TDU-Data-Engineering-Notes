@@ -1,0 +1,1 @@
+python data_producer.py BTC-USDC analyser localhost:9092

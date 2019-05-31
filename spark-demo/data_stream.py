@@ -1,12 +1,12 @@
 import argparse
-import atext
+import atexit
 import logging
 import json
 from kafka import KafkaProducer
 from kafka.errors import KafkaError,KafkaTimeoutError
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
-from pyspark.streaming.kafka import KafkaUitls
+from pyspark.streaming.kafka import KafkaUtils
 import time
 
 logging_format='%(asctime)s - %(message)s'
@@ -37,7 +37,7 @@ def process_stream(stream,kafka_producer,target_topic):
         # (Symbol,(Price, Count))
         return record.get('Symbol'),(float(record.get('LastTradePrice')),1)
 
-    stream.map(parir).reduceByKey(lambda a,b: (a[0]+b[0],a[1]+b[1])),map(lambda (k,v): (k,v[0]/v[1])).foreatchRDD(send_to_kafka)
+    stream.map(parir).reduceByKey(lambda a,b: (a[0]+b[0],a[1]+b[1])).map(lambda (k,v): (k, v[0]/v[1])).foreachRDD(send_to_kafka)
 
 
 def shutdown_hook(producer):
@@ -72,19 +72,20 @@ if __name__ == "__main__":
     kafka_borker = args.kafka_borker
     batch_duration = int(args.batch_duration)
 
-    sc = SparkContext('local[2]',AveragePrice)
-    sc.setLevel("INFO")
+    sc = SparkContext('local[2]','AveragePrice')
+    sc.setLogLevel("INFO")
     ssc = StreamingContext(sc, batch_duration)
-    //创建流
-    directKafkaStream = KafkaUitls.createDirectStream(ssc,[source_topic],{'metadata.broker.list':kafka_borker})
+    # create stream 
+    directKafkaStream = KafkaUtils.createDirectStream(
+        ssc, [source_topic], {'metadata.broker.list': kafka_borker})
 
     stream=directKafkaStream.map(lambda x: x[1])
     
     kafka_producer=KafkaProducer(bootstrap_servers=kafka_borker)
-    //进行生产
+    # process
     process_stream(stream,kafka_producer,target_topic)
 
-    atexit.regist(shutdown_hook,kafka_producer)
+    atexit.register(shutdown_hook, kafka_producer)
 
     ssc.start()
     ssc.awaitTermination()
