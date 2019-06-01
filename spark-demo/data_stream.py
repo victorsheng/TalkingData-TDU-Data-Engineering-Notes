@@ -19,13 +19,14 @@ def process_stream(stream,kafka_producer,target_topic):
     def send_to_kafka(rdd):
         results=rdd.collect()
         for r in results:
-            dtata=json.dumps({
+            data=json.dumps({
                 'Symbol':r[0],
                 'Timestamp':time.time(),
                 'Average':r[1]
                 })
             try:
-                logger.info('Sending average price &s to kafka',data)
+                logger.info('Sending average price %s to kafka topic %s',
+                            data, target_topic)
                 kafka_producer.send(target_topic,value=data)
             except Exception as e:
                 logger.warn('Failed to send average price to kafka, casued by :%s',
