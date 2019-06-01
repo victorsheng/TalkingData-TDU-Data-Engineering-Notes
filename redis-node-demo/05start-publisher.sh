@@ -1,0 +1,1 @@
+python redis-publisher.py average-price 127.0.0.1:9092 price 127.0.0.1 6379

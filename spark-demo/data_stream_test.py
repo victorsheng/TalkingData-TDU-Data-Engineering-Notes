@@ -8,7 +8,7 @@ from pyspark.streaming import StreamingContext
 
 logging_format = '%(asctime)s - %(message)s'
 logging.basicConfig(format=logging_format)
-logger = logging.getLogger('data_stream')
+logger = logging.getLogger('data_stream_test')
 logger.setLevel(logging.DEBUG)
 
 
