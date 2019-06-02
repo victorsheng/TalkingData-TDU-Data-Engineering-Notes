@@ -1,9 +1,9 @@
-import { loadavg } from "os";
 
 $(function () {
    var data_points=[];
-   data_points.push({values:[],key:'BTC-USD'});
-   $("#chart").height($(window).height- $('#header').height());
+    data_points.push({ values: [], key: 'BTC-USDC' });
+    data_points.push({ values: [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }], key: 'demo2' });
+   $("#chart").height($(window).height()- $('#header').height());
 
    var chart=nv.models.lineChart()
    .interactive('monotone')
@@ -12,12 +12,19 @@ $(function () {
    .showLegend(true)
    .color(d3.scale.category10().range());
 
+
+
+    // var int = self.setInterval(function () {
+    //     console.log(data_points)
+    // }, 1000);
+
+
    chart.xAxis
-        .AxisLabel('time')
-        .tickFormat(formateDateTick);
+       .axisLabel('time')
+       .tickFormat(formateDateTick);
 
     chart.yAxis
-        .AxisLabel('Price');
+        .axisLabel('Price');
 
     nv.addGraph(loadGraph)
 
@@ -36,8 +43,7 @@ $(function () {
 
     function formateDateTick(time) {
         var date=new Date(time);
-        console.log(date);
-        return d3.time.format('%H:%M:%A')(date);
+        return d3.time.format('%H:%M:%S')(date);
     }
 
 
@@ -46,33 +52,38 @@ $(function () {
     var socket=io();
 
     socket.on('data',function (data) {
+        console.log('recived msg: %s',data)
         newDataCallBack(data);
         
     })
 
     function newDataCallBack(message) {
         var parsed=JSON.parse(message);
-        var timestamp=parsed['TimeStamp'];
+        var timestamp = parsed['Timestamp'];
         var price = parsed['Average'];
-        var symbol = parsed['symbol'];
+        var symbol = parsed['Symbol'];
         var point={};
 
-        point.x=timestamp;
+        point.x = timestamp;
         point.y=price;
 
-        console.log(point);
+    
 
         var i=getSymbolIndex(symbol,data_points);
+        
+
+        data_points[i].values.push(point);
+
         if (data_points[i].values.length>100){
             data_points[i].values.shift();
-            loadGraph();
         }
-
+        console.log(data_points)
+        loadGraph();
 
     }
 
-    function getSymbolIndex(symbol, data_points) {
-        for(var i=0;i<data_points.length; i++){
+    function getSymbolIndex(symbol, array) {
+        for (var i = 0; i < array.length; i++){
             if(array[i].key==symbol){
                 return i;
             }
@@ -80,3 +91,36 @@ $(function () {
         return -1;
     }
 });
+
+
+// function sinAndCos() {
+//     var sin = [], sin2 = [],
+//         cos = [];
+
+//     //Data is represented as an array of {x,y} pairs.
+//     for (var i = 0; i < 100; i++) {
+//         sin.push({ x: i, y: Math.sin(i / 10) });
+//         sin2.push({ x: i, y: Math.sin(i / 10) * 0.25 + 0.5 });
+//         cos.push({ x: i, y: .5 * Math.cos(i / 10) });
+//     }
+
+//     //Line chart data should be sent as an array of series objects.
+//     return [
+//         {
+//             values: sin,      //values - represents the array of {x,y} data points
+//             key: 'Sine Wave', //key  - the name of the series.
+//             color: '#ff7f0e'  //color - optional: choose your own line color.
+//         },
+//         {
+//             values: cos,
+//             key: 'Cosine Wave',
+//             color: '#2ca02c'
+//         },
+//         {
+//             values: sin2,
+//             key: 'Another sine wave',
+//             color: '#7777ff',
+//             area: true      //area - set to true if you want this line to turn into a filled area chart.
+//         }
+//     ];
+// }
