@@ -2,8 +2,9 @@
 $(function () {
    var data_points=[];
     data_points.push({ values: [], key: 'BTC-USDC' });
-    data_points.push({ values: [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }], key: 'demo2' });
-   $("#chart").height($(window).height()- $('#header').height());
+    data_points.push({ values: [{ x: 1559525937, y: 1 }, { x: 1559527937, y: 200 }, { x: 1559529937, y: 30 }, { x: 1559531937, y: 30 }], key: 'demo2' });
+   $("#chart svg").height($(window).height()- $('#header').height());
+    $("#chart svg").height($(window).width());
 
    var chart=nv.models.lineChart()
    .interactive('monotone')
@@ -30,7 +31,8 @@ $(function () {
 
     function loadGraph(){
         d3.select('#chart svg')
-        .datum(data_points)
+            // .datum(mockData())
+            .datum(data_points)
         .transition()
         .duration(5)
         .call(chart)
@@ -93,34 +95,34 @@ $(function () {
 });
 
 
-// function sinAndCos() {
-//     var sin = [], sin2 = [],
-//         cos = [];
+function mockData() {
+    var sin = [], sin2 = [],
+        cos = [];
 
-//     //Data is represented as an array of {x,y} pairs.
-//     for (var i = 0; i < 100; i++) {
-//         sin.push({ x: i, y: Math.sin(i / 10) });
-//         sin2.push({ x: i, y: Math.sin(i / 10) * 0.25 + 0.5 });
-//         cos.push({ x: i, y: .5 * Math.cos(i / 10) });
-//     }
+    //Data is represented as an array of {x,y} pairs.
+    for (var i = 0; i < 100; i++) {
+        sin.push({ x: i, y: Math.sin(i / 10) });
+        sin2.push({ x: i, y: Math.sin(i / 10) * 0.25 + 0.5 });
+        cos.push({ x: i, y: .5 * Math.cos(i / 10) });
+    }
 
-//     //Line chart data should be sent as an array of series objects.
-//     return [
-//         {
-//             values: sin,      //values - represents the array of {x,y} data points
-//             key: 'Sine Wave', //key  - the name of the series.
-//             color: '#ff7f0e'  //color - optional: choose your own line color.
-//         },
-//         {
-//             values: cos,
-//             key: 'Cosine Wave',
-//             color: '#2ca02c'
-//         },
-//         {
-//             values: sin2,
-//             key: 'Another sine wave',
-//             color: '#7777ff',
-//             area: true      //area - set to true if you want this line to turn into a filled area chart.
-//         }
-//     ];
-// }
+    //Line chart data should be sent as an array of series objects.
+    return [
+        {
+            values: sin,      //values - represents the array of {x,y} data points
+            key: 'Sine Wave', //key  - the name of the series.
+            color: '#ff7f0e'  //color - optional: choose your own line color.
+        },
+        {
+            values: cos,
+            key: 'Cosine Wave',
+            color: '#2ca02c'
+        },
+        {
+            values: sin2,
+            key: 'Another sine wave',
+            color: '#7777ff',
+            area: true      //area - set to true if you want this line to turn into a filled area chart.
+        }
+    ];
+}

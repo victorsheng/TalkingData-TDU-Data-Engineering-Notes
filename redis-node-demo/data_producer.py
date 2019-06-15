@@ -15,6 +15,7 @@ logger = logging.getLogger('data_producer')
 logger.setLevel(logging.DEBUG)
 
 API_BASE = 'https://api.pro.coinbase.com'
+requests.DEFAULT_RETRIES = 5
 
 def check_symbol(symbol):
     '''
