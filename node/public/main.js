@@ -2,16 +2,17 @@
 $(function () {
    var data_points=[];
     data_points.push({ values: [], key: 'BTC-USDC' });
-    data_points.push({ values: [{ x: 1559525937, y: 1 }, { x: 1559527937, y: 200 }, { x: 1559529937, y: 30 }, { x: 1559531937, y: 30 }], key: 'demo2' });
+//    data_points.push({ values: [{ x: 1559525937, y: 1 }, { x: 1559527937, y: 200 }, { x: 1559529937, y: 30 }, { x: 1559531937, y: 30 }], key: 'demo2' });
    $("#chart svg").height($(window).height()- $('#header').height());
-    $("#chart svg").height($(window).width());
+    $("#chart svg").width(1000)
+    // $("#chart svg").height($(window).width());
 
    var chart=nv.models.lineChart()
    .interactive('monotone')
-   .margin({bottom:100})
+       .margin({left:100,bottom:100})
    .useInteractiveGuideline(true)
    .showLegend(true)
-   .color(d3.scale.category10().range());
+//    .color(d3.scale.category10().range());
 
 
 
@@ -21,13 +22,13 @@ $(function () {
 
 
    chart.xAxis
-       .axisLabel('time')
+       .axisLabel('Time')
        .tickFormat(formateDateTick);
 
     chart.yAxis
         .axisLabel('Price');
 
-    nv.addGraph(loadGraph)
+    nv.addGraph(loadGraph);
 
     function loadGraph(){
         d3.select('#chart svg')
