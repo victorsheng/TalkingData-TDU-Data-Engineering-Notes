@@ -7,7 +7,7 @@ mercurial==4.8.2
 ply==3.11
 py4j==0.10.7
 pypandoc==1.4
-pyspark==2.4.3
+pyspark==3.2.2
 redis==3.2.1
 requests==2.22.0
 schedule==0.6.0
